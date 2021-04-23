@@ -20,7 +20,8 @@ import { extendGraphqlSchema } from './mutations';
 const databaseURL = process.env.DATABASE_URL || 'file:./keystone.db';
 
 const sessionConfig = {
-  // secure: process.env.NODE_ENV === 'production',
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: false,
   maxAge: 60 * 60 * 24 * 360, // How long they stay signed in?
   secret: process.env.COOKIE_SECRET || 'secret',
 };
