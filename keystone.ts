@@ -17,13 +17,12 @@ import { insertSeedData } from './seed-data';
 import { sendPasswordResetEmail } from './lib/mail';
 import { extendGraphqlSchema } from './mutations';
 
-const databaseURL =
-  process.env.DATABASE_URL || 'mongodb://localhost/keystone-sick-fits-tutorial';
+const databaseURL = process.env.DATABASE_URL || 'file:./keystone.db';
 
 const sessionConfig = {
   // secure: process.env.NODE_ENV === 'production',
   maxAge: 60 * 60 * 24 * 360, // How long they stay signed in?
-  secret: process.env.COOKIE_SECRET,
+  secret: process.env.COOKIE_SECRET || 'secret',
 };
 
 const { withAuth } = createAuth({
@@ -79,7 +78,7 @@ export default withAuth(
     },
     session: withItemData(statelessSessions(sessionConfig), {
       // GraphQL Query
-      User: `id name email role { ${permissionsList.join(' ')} }`,
+      User: 'id',
     }),
   })
 );
