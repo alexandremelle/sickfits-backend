@@ -4,6 +4,7 @@ import {
   withItemData,
   statelessSessions,
 } from '@keystone-next/keystone/session';
+import { Notifier } from '@airbrake/node';
 import { permissionsList } from './schemas/fields';
 import { Role } from './schemas/Role';
 import { OrderItem } from './schemas/OrderItem';
@@ -17,13 +18,19 @@ import { insertSeedData } from './seed-data';
 import { sendPasswordResetEmail } from './lib/mail';
 import { extendGraphqlSchema } from './mutations';
 
+const airbrake = new Notifier({
+  projectId: 330135,
+  projectKey: 'e2fbce3ba9282a9e4620c32874efad22',
+  environment: 'production',
+});
+
 function check(name: string) {}
 
 const databaseURL =
   process.env.DATABASE_URL || 'mongodb://localhost/keystone-sick-fits-tutorial';
 
 const sessionConfig = {
-  secure: process.env.NODE_ENV === 'production',
+  // secure: process.env.NODE_ENV === 'production',
   maxAge: 60 * 60 * 24 * 360, // How long they stay signed in?
   secret: process.env.COOKIE_SECRET,
 };
